@@ -12,9 +12,9 @@ type Project = {
   name?: string;
   creator?: string;
   description?: string;
-  goal?: BigInteger;
-  startTime?: BigInteger;
-  endTime?: BigInteger;
+  goal?: string;
+  startTime?: string;
+  endTime?: string;
 };
 
 const Card = ({ donationSucceeded, project }: cardProps) => {

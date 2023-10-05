@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { WagmiConfig, createConfig, configureChains, useAccount, useContractWrite, useContractRead } from "wagmi";
 import { alchemyProvider } from "../lib/provider.js";
-import { goerli } from "@wagmi/core/chains";
+import { sepolia } from "@wagmi/core/chains";
 import { publicProvider } from "wagmi/providers/public";
 import ProjectsDropdown from "../components/ProjectsDropdown";
 import Toggle from "@/components/Toggle";
@@ -14,15 +14,15 @@ type Project = {
   name?: string;
   creator?:string;
   description?: string;
-  goal?: BigInteger;
-  startTime?: BigInteger;
-  endTime?: BigInteger;
+  goal?: string;
+  startTime?: string;
+  endTime?: string;
 };
 
 
 export default function Home() {
-  const [displayProject, setDisplayProject] = useState<boolean>(true);
-  const defaultChains = [goerli];
+  const [displayProject, setDisplayProject] = useState<boolean>(false);
+  const defaultChains = [sepolia];
   const [projects, setProjects] = useState<string[]>([]);
   // Configure chains & providers with the Alchemy provider.
   const { publicClient, webSocketPublicClient } = configureChains(

@@ -1,23 +1,21 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useRef, useState, Dispatch, SetStateAction } from "react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { Unit, useAccount, useContractRead } from "wagmi";
+import { useAccount, useContractRead } from "wagmi";
+import { contractABI, contractAddress } from "@/constants";
 
 type Project = {
   name?: string;
   creator?: string;
   description?: string;
-  goal?: BigInteger;
-  startTime?: BigInteger;
-  endTime?: BigInteger;
+  goal?: string;
+  startTime?: string;
+  endTime?: string;
 };
 
 interface ProjectSetter {
   setCardProject: React.Dispatch<React.SetStateAction<Project>>;
 }
-
-const contractABI = require("../contract/abi.json");
-const contractAddress = "0xF86ebc50E6C837580C1991Abd27Ae55205C118c2";
 
 const ProjectsDropdown = ({setCardProject}: ProjectSetter) => {
   const [projects, setProjects] = useState<Project[]>([]);
