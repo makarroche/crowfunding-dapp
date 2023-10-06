@@ -1,6 +1,8 @@
 import Image from "next/image";
 import myGif from "../public/gif/sparkles.gif"; //Credit: pislices.art/NFT
 import MagicButton from "./MagicButton";
+import { useEffect } from "react";
+import moment from "moment";
 
 type cardProps = {
   donationSucceeded: boolean;
@@ -18,12 +20,6 @@ type Project = {
 };
 
 const Card = ({ donationSucceeded, project }: cardProps) => {
-
-  const timeConversion = (time: any) => {
-    debugger
-    const myDate = new Date(Number(time));
-    return myDate.toDateString();
-  }
 
   return (
     <div className="bg-gray-200 font-sans bg-indigo-950 h-screen w-full flex flex-row justify-center items-center">
@@ -45,16 +41,16 @@ const Card = ({ donationSucceeded, project }: cardProps) => {
         {project.creator}
         </div>
         <div className="px-6 mt-4 text-black text-center font-normal text-lg">
-          <p> {project.goal?.toString() + " Goerli ETH " }</p>
+          <p> {project.goal?.toString() + " Sepolia ETH " }</p>
         </div>
         <hr className="mt-8"></hr>
         <div className="flex p-4">
           <div className="w-1/2 text-center text-black">
-            <span className="font-bold">Start Time</span> {timeConversion(project?.startTime)}
+            <span className="font-bold">Start Time </span><br></br>{moment.unix((parseInt(project?.startTime as string))).format("D/M/YYYY H:mm")}
           </div>
           <div className="w-0 border border-gray-300 text-black"></div>
           <div className="w-1/2 text-center text-black">
-            <span className="font-bold">End Time</span> {timeConversion(project?.endTime)}
+            <span className="font-bold">End Time</span><br></br>{moment.unix((parseInt(project?.endTime as string))).format("D/M/YYYY H:mm")}
           </div>
         </div>
         <div className="mb-0.5 ml-20 text-base font-medium text-indigo-700 dark:text-indigo-500">

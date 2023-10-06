@@ -30,7 +30,6 @@ const Form = () => {
   }, [createProjectClicked]);
 
   const checkFormValidation = () => {
-    debugger
     setError(false);
     if (Object.keys(project).length < 6) {
       setError(true);
@@ -44,15 +43,11 @@ const Form = () => {
 
   const createNewProject = () => {
     if(isConnected && address){
+      setError(false);
       const goal = parseInt(project.goal as string); 
-      const year = new Date().getFullYear();
-      const month = new Date().getMonth() + 1;
-      const day = new Date().getDate();
-      const startTime = moment(`${day}/${month}/${year} ${project.startTime}`, "M/D/YYYY H:mm").valueOf();
-      const endTime =  moment(`${day}/${month}/${year} ${project.endTime}`, "M/D/YYYY H:mm").valueOf();
-      debugger
-      write({args: [project.name, project.description, goal, 1696540808, 1696540908]});
-      
+      const startTime = moment(project.startTime).unix();
+      const endTime =  moment(project.endTime).unix();
+      write({args: [project.name, project.description, goal, startTime, endTime]}); 
     }
     else {
       setError(true);
@@ -147,7 +142,7 @@ const Form = () => {
             <div className="grid">
               <div className="bg-white flex min-h-[60px] flex-col-reverse justify-center rounded-md border border-gray-300 px-3 py-2 shadow-sm focus-within:shadow-inner">
                 <input
-                  type="time"
+                  type="datetime-local"
                   name="start-time"
                   id="start-time"
                   className="peer block w-full border-0 p-0 text-base text-gray-900 placeholder-gray-400 focus:ring-0"
@@ -163,7 +158,7 @@ const Form = () => {
             <div className="grid">
               <div className="bg-white flex min-h-[60px] flex-col-reverse justify-center rounded-md border border-gray-300 px-3 py-2 shadow-sm focus-within:shadow-inner">
                 <input
-                  type="time"
+                  type="datetime-local"
                   name="end-time"
                   id="end-time"
                   className="peer block w-full border-0 p-0 text-base text-gray-900 placeholder-gray-400 focus:ring-0"

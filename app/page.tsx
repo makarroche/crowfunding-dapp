@@ -21,9 +21,9 @@ type Project = {
 
 
 export default function Home() {
-  const [displayProject, setDisplayProject] = useState<boolean>(false);
   const defaultChains = [sepolia];
-  const [projects, setProjects] = useState<string[]>([]);
+  const[cardProject, setCardProject] = useState<Project>({});
+
   // Configure chains & providers with the Alchemy provider.
   const { publicClient, webSocketPublicClient } = configureChains(
     defaultChains,
@@ -40,7 +40,6 @@ export default function Home() {
   });
 
 
-  const[cardProject, setCardProject] = useState<Project>({});
 
   return (
     <WagmiConfig config={config}>
@@ -52,7 +51,7 @@ export default function Home() {
           <Toggle />
         </div>
       </div>
-      {displayProject ? <ProjectDisplay project={cardProject}/> : <Form></Form>}
+      {Object.keys(cardProject).length > 0 ? <ProjectDisplay project={cardProject}/> : <Form></Form>}
     </WagmiConfig>
   );
 }

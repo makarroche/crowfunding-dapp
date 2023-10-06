@@ -33,7 +33,6 @@ const ProjectsDropdown = ({setCardProject}: ProjectSetter) => {
 
   const handleClickProject = (projectClicked: Project) => {
     if(projectClicked) setCardProject(projectClicked);
-    debugger
   }
 
   return (
