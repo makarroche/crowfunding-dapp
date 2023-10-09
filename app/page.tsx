@@ -7,7 +7,7 @@ import { publicProvider } from "wagmi/providers/public";
 import ProjectsDropdown from "../components/ProjectsDropdown";
 import Toggle from "@/components/Toggle";
 import Form from "@/components/Form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ProjectDisplay from "@/components/ProjectDisplay";
 
 type Project = {
@@ -51,7 +51,7 @@ export default function Home() {
           <Toggle />
         </div>
       </div>
-      {Object.keys(cardProject).length > 0 ? <ProjectDisplay project={cardProject}/> : <Form></Form>}
+      {Object.keys(cardProject).length > 0 ? <ProjectDisplay project={cardProject} setCardProject={setCardProject} /> : <Form></Form>}
     </WagmiConfig>
   );
 }

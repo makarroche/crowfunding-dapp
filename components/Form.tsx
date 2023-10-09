@@ -1,19 +1,10 @@
 import { useEffect, useState } from "react";
 import MagicButton from "./MagicButton";
 import { useAccount, useContractWrite } from "wagmi";
-import {contractAddress, contractABI} from "@/constants";
+import {contractAddress, contractABI, Project} from "@/constants";
 import moment from "moment";
 
 const Form = () => {
-
-  type Project = {
-    name?: string;
-    creator?:string;
-    description?: string;
-    goal?: string;
-    startTime?: string;
-    endTime?: string;
-  };
   
   const [project, setProject] = useState<Project>({});
   const [createProjectClicked, setCreateProjectClicked] = useState<boolean>(false);

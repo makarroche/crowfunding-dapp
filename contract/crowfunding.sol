@@ -45,6 +45,7 @@ contract Crowfund {
         require(_endTime <= block.timestamp + maxDuration, "The end time of the project can't exceed the max duration");
 
         projects[count] = Project({
+            id: count,
             creator: msg.sender,
             name: _name,
             description:_description,
