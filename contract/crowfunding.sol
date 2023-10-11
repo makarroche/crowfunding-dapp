@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract Crowfund {
 
     struct Project {
+        uint id;
         address creator;
         string name;
         string description;
@@ -75,7 +76,7 @@ contract Crowfund {
         require(project.endTime >= block.timestamp, "Project has ended");
         project.pledgedFunds += _amount;
         amountPledged[_id][msg.sender] += _amount;
-        token.transferFrom(msg.sender, address(this), _amount);
+        token.transferFrom(msg.sender,address(this), _amount);
         emit Pledge(_id, msg.sender, _amount);
     }
 

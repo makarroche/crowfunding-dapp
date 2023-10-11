@@ -19,7 +19,7 @@ const ProjectsDropdown = ({setCardProject}: ProjectSetter) => {
 
   useEffect(() => {
     if(data) setProjects(data as object[]);
-  }, [data]);
+  }, [data, isLoading]);
 
 
   const handleClickProject = (projectClicked: Project) => {
@@ -74,7 +74,7 @@ const ProjectsDropdown = ({setCardProject}: ProjectSetter) => {
                   )}
                 </Menu.Item>)
                
-              }):<Menu as="div" className="relative text-center text-black">No projects yet!</Menu>}
+              }):<Menu as="div" className="relative text-center text-xs text-black">No projects yet!</Menu>}
             </div>
           </Menu.Items>
         </Transition>

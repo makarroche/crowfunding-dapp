@@ -13,6 +13,8 @@ const Toggle = () => {
     connector: new InjectedConnector(),
   });
 
+  //Cuando se conecta pedir approve
+
   useEffect(() => {
    enabled === true ? connect(): disconnect();
   }, [enabled]);

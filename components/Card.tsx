@@ -13,29 +13,37 @@ type cardProps = {
 const Card = ({ project, setCardProject }: cardProps) => {
   const goal = project?.goal;
   const { address } = useAccount();
+
+  const isItCreator = () => {
+    return address === project?.creator;
+  }
+
   const { data, isError, isLoading, isSuccess, write } = useContractWrite({
     address: contractAddress,
     abi: contractABI,
-    functionName: "pledge",
+    functionName: isItCreator() ? "claimFunds" : "pledge",
   });
-
 
   const handleClickCreateProject = () => {
     setCardProject({});
   }
 
   const calculatePercentageOfFunds = () => {
-    const percentage = Math.round(parseInt(project?.pledgedFunds as string)*100/(parseInt(goal as string)));
+    const percentage = Math.round(parseFloat(project?.pledgedFunds as string)/(10**18)*100/(parseInt(goal as string)));
+    debugger
     return `${percentage}%`;
   }
 
   const handleClickDonate = () => {
-    isItCreator() ?  write({args: [project?.id]}) : write({args: [project?.id, 1]});
+    //Mint Tokens in ERC20 Contract
+    //Deploy Crowfunding with this contract address
+    //Approve addresses of receivers in the ERC20 contract
+    //Transfer tokens to receivers
+    //Approve addresses of ERC20 for each sender
+    //Pledge
+    isItCreator() ?  write({args: [project?.id]}) : write({args: [project?.id,1]});
   }
 
-  const isItCreator = () => {
-    return address === project?.creator;
-  }
 
   return (
     <div className="bg-gray-200 font-sans bg-indigo-950 h-screen w-full grid justify-center items-center">
@@ -84,7 +92,7 @@ const Card = ({ project, setCardProject }: cardProps) => {
           </div>
         </div>
         <div className="text-center">
-          <MagicButton action = {isItCreator() ? "Claim Funds": "Donate 1 Sepolia ETH"} onClick={handleClickDonate}></MagicButton>
+          <MagicButton action = {isItCreator() ? "Claim Funds": "Donate 1 MTK"} onClick={handleClickDonate}></MagicButton>
         </div>
         <div className="text-center mb-2">
           {isSuccess && (
