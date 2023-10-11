@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Switch } from "@headlessui/react";
-import { useAccount, useConnect, useDisconnect, useEnsName } from "wagmi";
+import { useAccount, useConnect, useContractWrite, useDisconnect, useEnsName } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { useNetwork } from "wagmi";
+import { contractAddress, contractERC20, contractERC20ABI } from "@/constants";
 
 const Toggle = () => {
   const [enabled, setEnabled] = useState(false);
@@ -13,13 +14,27 @@ const Toggle = () => {
     connector: new InjectedConnector(),
   });
 
-  //Cuando se conecta pedir approve
-
   useEffect(() => {
    enabled === true ? connect(): disconnect();
   }, [enabled]);
 
+  useEffect(() => {
+    if(isConnected && address){
+      approveAddressWhenConnected();
+    }
+  }, [address]);
+
   const { chain } = useNetwork();
+  const { data, isError, isLoading, isSuccess, write } = useContractWrite({
+    address: contractERC20,
+    abi: contractERC20ABI,
+    functionName: "approve",
+  });
+
+  const approveAddressWhenConnected = () => {
+    write({args: [contractAddress, 500000000000000000000]})
+    console.log(`Aprove address results ${isSuccess===true ? isSuccess : isError}`);
+  }
 
   if (isConnected)
     return (

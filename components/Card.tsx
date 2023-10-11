@@ -29,8 +29,7 @@ const Card = ({ project, setCardProject }: cardProps) => {
   }
 
   const calculatePercentageOfFunds = () => {
-    const percentage = Math.round(parseFloat(project?.pledgedFunds as string)/(10**18)*100/(parseInt(goal as string)));
-    debugger
+    const percentage = Math.round(parseFloat(project?.pledgedFunds as string)*100/(parseInt(goal as string)));
     return `${percentage}%`;
   }
 
@@ -83,7 +82,7 @@ const Card = ({ project, setCardProject }: cardProps) => {
         </div>
         <div className="flex flex-row justify-center items-center">
           <div className="w-52 text-end bg-gray-200 rounded-full h-3.5 mb-4 dark:bg-gray-700">
-            <div className="bg-indigo-600 text-xs font-medium text-blue-100 text-center h-3.5 rounded-full dark:bg-indigo-500 w-6/12">
+            <div className={`bg-indigo-600 text-xs font-medium text-blue-100 text-center h-3.5 rounded-full dark:bg-indigo-500 w-${calculatePercentageOfFunds()}`}>
               {calculatePercentageOfFunds()}
             </div>
             <span className="text-sm font-medium text-blue-700 dark:text-black">
