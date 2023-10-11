@@ -4,6 +4,7 @@ import MagicButton from "./MagicButton";
 import moment from "moment";
 import { Project, contractABI, contractAddress } from "@/constants";
 import { useAccount, useContractWrite } from "wagmi";
+import { useEffect, useState } from "react";
 
 type cardProps = {
   project: Project;
@@ -13,6 +14,15 @@ type cardProps = {
 const Card = ({ project, setCardProject }: cardProps) => {
   const goal = project?.goal;
   const { address } = useAccount();
+  const [funds, setFunds] = useState<string>();
+  const [projectChanged, setProjectChanged] = useState(false);
+
+  useEffect(() => {
+      setProjectChanged(true);
+      const percentage = calculatePercentageOfFunds(0);
+      setFunds(`${percentage}%`);
+  }, [project]);
+
 
   const isItCreator = () => {
     return address === project?.creator;
@@ -24,13 +34,20 @@ const Card = ({ project, setCardProject }: cardProps) => {
     functionName: isItCreator() ? "claimFunds" : "pledge",
   });
 
+  useEffect(() => {
+    if(isSuccess && !isItCreator()){
+      const percentage = calculatePercentageOfFunds(1);
+      setFunds(`${percentage}%`);
+    }
+  }, [isSuccess, data]);
+
   const handleClickCreateProject = () => {
     setCardProject({});
   }
 
-  const calculatePercentageOfFunds = () => {
-    const percentage = Math.round(parseFloat(project?.pledgedFunds as string)*100/(parseInt(goal as string)));
-    return `${percentage}%`;
+  const calculatePercentageOfFunds = (addFunds: number) => {
+    const percentage = Math.round((parseFloat(isSuccess && !projectChanged ? funds as string : project.pledgedFunds as string) + addFunds)*100/(parseInt(goal as string)));
+    return percentage;
   }
 
   const handleClickDonate = () => {
@@ -83,7 +100,7 @@ const Card = ({ project, setCardProject }: cardProps) => {
         <div className="flex flex-row justify-center items-center">
           <div className="w-52 text-end bg-gray-200 rounded-full h-3.5 mb-4 dark:bg-gray-700">
             <div className={`bg-indigo-600 text-xs font-medium text-blue-100 text-center h-3.5 rounded-full dark:bg-indigo-500 w-${calculatePercentageOfFunds()}`}>
-              {calculatePercentageOfFunds()}
+              {funds}
             </div>
             <span className="text-sm font-medium text-blue-700 dark:text-black">
              {goal?.toString()}
