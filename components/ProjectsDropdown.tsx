@@ -15,6 +15,7 @@ const ProjectsDropdown = ({setCardProject}: ProjectSetter) => {
     address: contractAddress,
     abi: contractABI,
     functionName: "getProjects",
+    watch: true
   });
 
   useEffect(() => {
