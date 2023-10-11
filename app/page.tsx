@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
 import { WagmiConfig, createConfig, configureChains, useAccount, useContractWrite, useContractRead } from "wagmi";
+import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { alchemyProvider } from "../lib/provider.js";
 import { sepolia } from "@wagmi/core/chains";
 import { publicProvider } from "wagmi/providers/public";
@@ -19,13 +21,10 @@ type Project = {
   endTime?: string;
 };
 
-
-export default function Home() {
-  const defaultChains = [sepolia];
-  const[cardProject, setCardProject] = useState<Project>({});
+const defaultChains = [sepolia];
 
   // Configure chains & providers with the Alchemy provider.
-  const { publicClient, webSocketPublicClient } = configureChains(
+  const { chains, publicClient, webSocketPublicClient } = configureChains(
     defaultChains,
     [
       alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string}),
@@ -33,13 +32,25 @@ export default function Home() {
     ]
   );
 
-  const config = createConfig({
-    autoConnect: true,
-    publicClient,
-    webSocketPublicClient,
-  });
+const config = createConfig({
+  autoConnect: true,
+  connectors: [
+    new MetaMaskConnector({ chains }),
+    new WalletConnectConnector({
+      chains,
+      options: {
+        projectId: '...',
+      },
+    })
+  ],
+  publicClient,
+  webSocketPublicClient,
+});
 
 
+export default function Home() {
+ 
+  const[cardProject, setCardProject] = useState<Project>({});
 
   return (
     <WagmiConfig config={config}>
